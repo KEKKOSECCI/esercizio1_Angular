@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component,Input,Output,EventEmitter } from '@angular/core';
+import { Hero } from '../../models/hero-model';
 
 @Component({
   selector: 'app-hero-card-component',
@@ -8,5 +9,10 @@ import { Component } from '@angular/core';
   styleUrl: './hero-card-component.css',
 })
 export class HeroCardComponent {
+  @Input() hero!: Hero; // Riceve l'eroe dal padre
+  @Output() onMissionDone = new EventEmitter<number>(); // Invia l'ID al padre
+  notifyParent() {
+    this.onMissionDone.emit(this.hero.id);
+  }
 
 }

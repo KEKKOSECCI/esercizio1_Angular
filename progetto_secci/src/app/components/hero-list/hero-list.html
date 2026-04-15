@@ -1,0 +1,13 @@
+<h1>Mission Control Center</h1>
+<div class="container">
+    <!-- Ciclo sugli eroi e passaggio dati al figlio -->
+    <app-hero-card-component
+    *ngFor="let h of heroes" 
+    [hero]="h" 
+    (onMissionDone)="markAsDone($event)">
+    (click)="modifyHero(h)"
+</app-hero-card-component>
+</div>
+
+<p>Missioni completate: {{ totalCompleted }}</p>
+<app-hero-insert (addHero)="addNewHero($event)" [newHero]="getcurrentHero()"></app-hero-insert>
