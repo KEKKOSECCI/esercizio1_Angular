@@ -11,8 +11,12 @@ import { Hero } from '../../models/hero-model';
 export class HeroCardComponent {
   @Input() hero!: Hero; // Riceve l'eroe dal padre
   @Output() onMissionDone = new EventEmitter<number>(); // Invia l'ID al padre
+  @Output() edit = new EventEmitter<void>();
   notifyParent() {
     this.onMissionDone.emit(this.hero.id);
+  }
+  avvisaEdit(){
+    this.edit.emit();
   }
 
 }

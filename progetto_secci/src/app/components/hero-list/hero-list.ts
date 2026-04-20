@@ -31,14 +31,29 @@ export class HeroList {
     return this.heroes.filter(h => h.completata).length;
   }
   addNewHero(hero: Hero) {
-    this.heroes.push(hero);
+  // Convertiamo l'ID in numero (l'input text lo passa come stringa)
+  const heroId = Number(hero.id);
+  const index = this.heroes.findIndex(h => h.id === heroId);
+
+  if (index !== -1) {
+    // MODIFICA
+    this.heroes[index] = { ...hero, id: heroId };
+  } else {
+    // AGGIUNTA
+    // Se l'ID è 0 o vuoto, generiamo uno nuovo, altrimenti usiamo quello digitato
+    const finalId = heroId === 0 ? Date.now() : heroId;
+    this.heroes.push({ ...hero, id: finalId });
   }
+}
+
+
   modifyHero(heroId: Hero) {
     this.currentHero = heroId;
   }
-  getcurrentHero(){
-      return this.currentHero;
+  getcurrentHero() {
+  return this.currentHero || { id: 0, nome: '', potere: '', completata: false };
   }
+
 
 }
 

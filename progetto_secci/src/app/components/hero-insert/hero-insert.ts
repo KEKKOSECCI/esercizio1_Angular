@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter, Input } from '@angular/core';
 import { FormsModule } from '@angular/forms'; // OBBLIGATORIO per ngModel
 import { Hero } from '../../models/hero-model';
 
@@ -11,7 +11,7 @@ import { Hero } from '../../models/hero-model';
 })
 export class HeroInsert {
   // Oggetto d'appoggio per il two-way binding
-  newHero: Hero = {
+  @Input() newHero: Hero = {
     id: 0,
     nome: '',
     potere: '',
@@ -19,15 +19,16 @@ export class HeroInsert {
   };
 
   @Output() addHero = new EventEmitter<Hero>();
+ 
 
   submitHero() {
-    if (this.newHero.nome && this.newHero.potere) {
-      // Mandiamo una copia dell'oggetto al padre
-      this.addHero.emit({ ...this.newHero, id: Date.now() });
-      
-      // Resettiamo il form
-      this.newHero.nome = '';
-      this.newHero.potere = '';
-    }
+  if (this.newHero.nome && this.newHero.potere) {
+    // Mandiamo l'oggetto così com'è (l'ID lo gestisce il padre o rimane quello di prima)
+    this.addHero.emit({ ...this.newHero });
+
+    // Resettiamo il form riportandolo allo stato "vuoto" (ID 0)
+    this.newHero = { id: 0, nome: '', potere: '', completata: false };
   }
+}
+
 }

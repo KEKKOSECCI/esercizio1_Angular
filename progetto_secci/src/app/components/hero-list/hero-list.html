@@ -3,6 +3,7 @@
     <!-- Ciclo sugli eroi e passaggio dati al figlio -->
     <app-hero-card-component
     *ngFor="let h of heroes" 
+    (edit) = "modifyHero(h)"
     [hero]="h" 
     (onMissionDone)="markAsDone($event)">
     (click)="modifyHero(h)"
