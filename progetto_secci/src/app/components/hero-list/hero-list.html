@@ -11,4 +11,4 @@
 </div>
 
 <p>Missioni completate: {{ totalCompleted }}</p>
-<app-hero-insert (addHero)="addNewHero($event)" [newHero]="getcurrentHero()"></app-hero-insert>
+<app-hero-insert (addHero)="addNewHero($event)" [heroToEdit]="getcurrentHero()"></app-hero-insert>

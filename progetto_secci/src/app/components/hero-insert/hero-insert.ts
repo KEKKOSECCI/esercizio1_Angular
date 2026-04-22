@@ -10,25 +10,32 @@ import { Hero } from '../../models/hero-model';
   styleUrl: './hero-insert.css'
 })
 export class HeroInsert {
-  // Oggetto d'appoggio per il two-way binding
-  @Input() newHero: Hero = {
+  // 1. Questa è la copia locale. 
+  // NON ha @Input(), quindi è isolata dal padre.
+  newHero: Hero = {
     id: 0,
     nome: '',
     potere: '',
     completata: false
   };
-
+// Quando il padre passa un eroe, creiamo una copia slegata dal riferimento originale
+  @Input() set heroToEdit(value: Hero) {
+    if (value) {
+      this.newHero = { ...value }; // Lo spread operator {...} crea la copia
+    }
+  }
   @Output() addHero = new EventEmitter<Hero>();
- 
 
   submitHero() {
-  if (this.newHero.nome && this.newHero.potere) {
-    // Mandiamo l'oggetto così com'è (l'ID lo gestisce il padre o rimane quello di prima)
-    this.addHero.emit({ ...this.newHero });
+    if (this.newHero.nome && this.newHero.potere) {
+      // 2. Inviamo i dati al padre solo ORA
+      this.addHero.emit({ ...this.newHero });
 
-    // Resettiamo il form riportandolo allo stato "vuoto" (ID 0)
-    this.newHero = { id: 0, nome: '', potere: '', completata: false };
+      // 3. Resettiamo la copia locale per svuotare i campi
+      this.newHero = { id: 0, nome: '', potere: '', completata: false };
+    }
   }
 }
 
-}
+
+

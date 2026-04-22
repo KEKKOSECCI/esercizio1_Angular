@@ -41,8 +41,9 @@ export class HeroList {
   } else {
     // AGGIUNTA
     // Se l'ID è 0 o vuoto, generiamo uno nuovo, altrimenti usiamo quello digitato
-    const finalId = heroId === 0 ? Date.now() : heroId;
+    const finalId = heroId === 0 ? this.heroes.length +1: heroId;
     this.heroes.push({ ...hero, id: finalId });
+    console.log(this.heroes);
   }
 }
 
