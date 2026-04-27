@@ -1,0 +1,43 @@
+.btn-back {
+  /* Posizionamento fisso in alto a sinistra per essere sempre raggiungibile */
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 100;
+
+  /* Estetica Comic-Modern */
+  background-color: #007bff; /* Blu Invincible */
+  color: white;
+  padding: 10px 20px;
+  border: 2px solid #000;
+  border-radius: 6px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  
+  /* Ombra piatta stile fumetto */
+  box-shadow: 4px 4px 0px #000;
+  transition: all 0.2s ease;
+  
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-back:hover {
+  background-color: #ffcc00; /* Giallo Oro al passaggio */
+  color: #000;
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px #000;
+}
+
+.btn-back:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0px #000;
+}
+
+.icon {
+  font-size: 1.2rem;
+}

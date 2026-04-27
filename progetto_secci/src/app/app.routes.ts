@@ -6,6 +6,6 @@ import { HeroInsert } from './components/hero-insert/hero-insert';
 export const routes: Routes = [
     {path:'',component:HomeComponent},
     {path:'list',component:HeroList},
-    {path:'insert/:id',component:HeroInsert}
+    {path:'insert/:id',component:HeroInsert},
 
 ];
