@@ -1,0 +1,72 @@
+.hero-section {
+  /* Risolto il problema dello scroll con min-height e overflow */
+  min-height: 100vh;
+  width: 100%;
+  background-image: url('../../../images/eroi.jpeg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #ffffff;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.overlay {
+  /* Usiamo un blu scurissimo quasi nero per richiamare le ombre dei fumetti */
+  background: rgba(10, 20, 40, 0.85); 
+  padding: 3rem;
+  border-radius: 20px;
+  max-width: 650px;
+  /* Un bordo sottile giallo oro per far risaltare il box */
+  border: 3px solid #ffcc00; 
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+  margin: 20px;
+}
+
+h1 {
+  font-size: 3.5rem;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  /* Blu elettrico ispirato al costume di Invincible */
+  color: #007bff; 
+  /* Ombra netta per un effetto "titolo di fumetto" */
+  text-shadow: 3px 3px 0px #000; 
+}
+
+p {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+  color: #f0f0f0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.btn-lista {
+  display: inline-block;
+  padding: 15px 40px;
+  /* Rosso vibrante ispirato a Spawn/Omni-Man */
+  background-color: #d90429; 
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 900;
+  text-transform: uppercase;
+  border-radius: 5px; /* Angoli meno arrotondati per un look più "strong" */
+  border: 2px solid #000;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  box-shadow: 5px 5px 0px #000; /* Ombra piatta stile pop-art */
+}
+
+.btn-lista:hover {
+  /* Giallo oro per il contrasto al passaggio del mouse */
+  background-color: #ffcc00;
+  color: #000;
+  transform: translate(-2px, -2px);
+  box-shadow: 7px 7px 0px #000;
+}

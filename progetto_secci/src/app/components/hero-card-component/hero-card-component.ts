@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component,Input,Output,EventEmitter } from '@angular/core';
 import { Hero } from '../../models/hero-model';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-hero-card-component',
-  imports: [CommonModule],
+  imports: [CommonModule,RouterLink],
   templateUrl: './hero-card-component.html',
   styleUrl: './hero-card-component.css',
 })

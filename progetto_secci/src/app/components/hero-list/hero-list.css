@@ -1,21 +1,155 @@
+.mission-overlay {
+  width: 100%;
+  height: 100vh; /* Esattamente l'altezza dello schermo */
+  overflow-y: auto; /* Permette lo scroll verticale solo qui dentro */
+  overflow-x: hidden; /* Elimina categoricamente lo scroll orizzontale */
+  background: rgba(10, 20, 40, 0.75);
+  padding: 40px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 h1 {
-  text-align: center;
-  color: #2c3e50;
-  font-family: sans-serif;
+  font-size: 3.5rem;
+  color: #007bff; /* Blu Invincible */
+  text-transform: uppercase;
+  font-weight: 900;
+  text-shadow: 4px 4px 0px #000;
+  margin-bottom: 30px;
+  letter-spacing: 2px;
 }
 
 .container {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 15px;
-  padding: 20px;
+  gap: 30px;
+  width: 100%;
+  max-width: 1400px; /* Evita che le card tocchino i bordi su schermi giganti */
+  margin: 0 auto;
 }
 
-p {
+/* Assicurati che h1 e status-bar non siano più larghi del 100% */
+h1, .status-bar {
+  width: 100%;
+  max-width: 1000px;
   text-align: center;
-  font-weight: bold;
-  font-size: 1.2em;
-  margin-top: 20px;
-  color: #555;
 }
+.mission-overlay {
+  position: relative; /* Necessario per posizionare la status-bar rispetto a questo div */
+  width: 100%;
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: rgba(10, 20, 40, 0.75);
+  padding: 60px 20px; /* Aumentato il padding superiore per non sovrapporsi al badge */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Nuova Status Bar: Piccola, in alto a destra e fissa */
+.status-bar {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: auto; /* Non più a tutta larghezza */
+  max-width: none;
+  z-index: 10; /* Sopra tutto il resto */
+}
+
+.status-bar p {
+  background: #ffcc00;
+  color: #000;
+  padding: 8px 15px; /* Molto più compatto */
+  border: 2px solid #000; /* Bordo leggermente più sottile */
+  border-radius: 6px;
+  font-weight: 900;
+  font-size: 0.9rem; /* Testo più piccolo e professionale */
+  text-transform: uppercase;
+  box-shadow: 4px 4px 0px #000; /* Ombra ridotta */
+  margin: 0;
+}
+
+.status-bar span {
+  color: #d90429;
+  font-size: 1.1rem; /* Numero leggermente più grande del testo */
+  margin-left: 5px;
+}
+
+/* Sistemiamo l'Action Bar per non farla cozzare con la status bar */
+.action-bar {
+  width: 100%;
+  max-width: 1000px;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+
+.btn-recluta {
+  /* Riprendiamo lo stile esatto della status-bar */
+  background: #ffcc00; /* Giallo Oro */
+  color: #000;
+  padding: 15px 40px;
+  border: 3px solid #000;
+  border-radius: 8px;
+  font-weight: 900;
+  font-size: 1.4rem;
+  text-transform: uppercase;
+  cursor: pointer;
+  
+  /* Ombra piatta stile pop-art */
+  box-shadow: 6px 6px 0px #000;
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  
+  /* Per farlo apparire come un link/bottone moderno */
+  display: inline-block;
+  text-decoration: none;
+}
+
+.btn-recluta:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: 9px 9px 0px #000;
+  background-color: #ffffff; /* Schiarisce al passaggio per feedback visivo */
+}
+
+.btn-recluta:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0px #000;
+}
+
+
+
+.btn-recluta {
+  /* Riprendiamo lo stile esatto della status-bar */
+  background: #ffcc00; /* Giallo Oro */
+  color: #000;
+  padding: 15px 40px;
+  border: 3px solid #000;
+  border-radius: 8px;
+  font-weight: 900;
+  font-size: 1.4rem;
+  text-transform: uppercase;
+  cursor: pointer;
+  
+  /* Ombra piatta stile pop-art */
+  box-shadow: 6px 6px 0px #000;
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  
+  /* Per farlo apparire come un link/bottone moderno */
+  display: inline-block;
+  text-decoration: none;
+}
+
+.btn-recluta:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: 9px 9px 0px #000;
+  background-color: #ffffff; /* Schiarisce al passaggio per feedback visivo */
+}
+
+.btn-recluta:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0px #000;
+}
+

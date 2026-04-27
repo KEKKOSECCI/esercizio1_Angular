@@ -1,8 +1,12 @@
-<div class="insert-card">
-  <h3>Aggiungi Nuovo Eroe</h3>
-  
-  <input type="text" [(ngModel)]="newHero.nome" placeholder="Nome Eroe">
-  <input type="text" [(ngModel)]="newHero.potere" placeholder="Potere">
-  
-  <button (click)="submitHero()">Aggiungi alla lista</button>
+<div class="insert-overlay">
+  <div class="insert-card">
+    <h3>{{ hero.id !== 0 ? 'Modifica Eroe' : 'Aggiungi Nuovo Eroe' }}</h3>
+    
+    <input type="text" [(ngModel)]="hero.nome" placeholder="Nome Eroe">
+    <input type="text" [(ngModel)]="hero.potere" placeholder="Potere Principale">
+    
+    <button (click)="save()">
+      {{ hero.id !== 0 ? 'Conferma Modifiche' : 'Recluta Eroe' }}
+    </button>
+  </div>
 </div>

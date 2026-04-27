@@ -5,7 +5,7 @@ import { HeroInsert } from './components/hero-insert/hero-insert';
 
 @Component({
   selector: 'app-root',
-  imports: [HeroList],
+  imports: [RouterOutlet],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })

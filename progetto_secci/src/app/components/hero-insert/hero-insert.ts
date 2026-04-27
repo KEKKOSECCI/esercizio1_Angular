@@ -1,6 +1,8 @@
 import { Component, Output, EventEmitter, Input } from '@angular/core';
 import { FormsModule } from '@angular/forms'; // OBBLIGATORIO per ngModel
 import { Hero } from '../../models/hero-model';
+import { HeroService } from '../../services/heroservice';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-hero-insert',
@@ -10,30 +12,26 @@ import { Hero } from '../../models/hero-model';
   styleUrl: './hero-insert.css'
 })
 export class HeroInsert {
-  // 1. Questa è la copia locale. 
-  // NON ha @Input(), quindi è isolata dal padre.
-  newHero: Hero = {
-    id: 0,
-    nome: '',
-    potere: '',
-    completata: false
-  };
-// Quando il padre passa un eroe, creiamo una copia slegata dal riferimento originale
-  @Input() set heroToEdit(value: Hero) {
-    if (value) {
-      this.newHero = { ...value }; // Lo spread operator {...} crea la copia
+  hero: Hero = { id: 0, nome: '', potere: '', completata: false };
+
+  // Inietti il servizio, le rotte (per l'ID) e il router (per tornare indietro)
+  constructor(
+    private heroService: HeroService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {}
+
+  ngOnInit() {
+    const id = +this.route.snapshot.paramMap.get('id')!;
+    if (id !== 0) {
+      const data = this.heroService.getHeroById(id);
+      if (data) this.hero = { ...data }; // Copia l'eroe nel form
     }
   }
-  @Output() addHero = new EventEmitter<Hero>();
 
-  submitHero() {
-    if (this.newHero.nome && this.newHero.potere) {
-      // 2. Inviamo i dati al padre solo ORA
-      this.addHero.emit({ ...this.newHero });
-
-      // 3. Resettiamo la copia locale per svuotare i campi
-      this.newHero = { id: 0, nome: '', potere: '', completata: false };
-    }
+  save() {
+    this.heroService.saveHero(this.hero);
+    this.router.navigate(['/list']); // Dopo il salva, torna alla lista
   }
 }
 

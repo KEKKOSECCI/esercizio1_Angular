@@ -6,7 +6,7 @@
   Missione Compiuta
 </button>
 
-<button class="btn-edit" (click)="avvisaEdit()">
+<button [routerLink]="['/insert' , hero.id]" class="btn-edit" >
   Edit ✏️
 </button>
 

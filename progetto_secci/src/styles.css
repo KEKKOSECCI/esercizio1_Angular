@@ -1,1 +1,28 @@
-/* You can add global styles to this file, and also import other style files */
+/* RESET TOTALE */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; /* Impedisce a bordi e padding di aumentare la larghezza */
+}
+
+html, body {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden; /* Blocca ogni scroll della pagina principale */
+  background-color: #0a1428; /* Colore di fallback */
+}
+
+body {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), 
+                    url('../src/images/eroi.jpeg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* CONTAINER ANGULAR */
+app-root {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
