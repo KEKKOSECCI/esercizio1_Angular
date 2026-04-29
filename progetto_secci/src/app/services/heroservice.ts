@@ -1,4 +1,6 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 // Interfaccia per tipizzare l'eroe
 export interface Hero {
@@ -12,56 +14,46 @@ export interface Hero {
   providedIn: 'root',
 })
 export class HeroService {
-  // Database locale degli eroi
-  private heroes: Hero[] = [
-    { id: 1, nome: "Iron-Man", potere: "fico", completata: false },
-    { id: 2, nome: "Spider-Man", potere: "ragno", completata: false },
-    { id: 3, nome: "Hulk", potere: "super-forza", completata: false },
-    { id: 4, nome: "Corsaro", potere: "Logistica", completata: false }
-  ];
+  // L'URL della tua API reale
+  private apiUrl = 'https://crudcrud.com/apid9316f9bf8d446b48fe3d35b6ebf334e'; 
 
-  // Restituisce tutta la lista
-  getHeroes(): Hero[] {
-    return this.heroes;
+  constructor(private http: HttpClient) {}
+
+  // 1. Restituisce tutta la lista (Richiesta GET)
+  getHeroes(): Observable<Hero[]> {
+    return this.http.get<Hero[]>(this.apiUrl);
   }
 
-  // Cerca un eroe specifico per l'Edit
-  getHeroById(id: number): Hero | undefined {
-    return this.heroes.find(h => h.id === id);
+  // 2. Cerca un eroe specifico per l'Edit (Richiesta GET)
+  getHeroById(id: number): Observable<Hero> {
+    return this.http.get<Hero>(`${this.apiUrl}/${id}`);
   }
 
-  // Segna missione come fatta
-  markAsDone(heroId: number) {
-    const hero = this.heroes.find(h => h.id === heroId);
-    if (hero) {
-      hero.completata = true;
-    }
+  // 3. Segna missione come fatta (Richiesta PUT o PATCH)
+  // Nota: Crudcrud richiede l'invio dell'intero oggetto aggiornato con PUT
+  markAsDone(hero: Hero): Observable<void> {
+    const updatedHero = { ...hero, completata: true };
+    return this.http.put<void>(`${this.apiUrl}/${hero.id}`, updatedHero);
   }
 
-  // Calcola il totale delle missioni completate
-  getTotalCompleted(): number {
-    return this.heroes.filter(h => h.completata).length;
+  // 4. Calcola il totale delle missioni completate (Gestito lato client)
+  // Questo metodo elabora l'array che riceve dall'Observable del componente
+  getTotalCompleted(heroes: Hero[]): number {
+    return heroes.filter(h => h.completata).length;
   }
 
-  // Gestisce sia AGGIUNTA che MODIFICA
-  saveHero(hero: Hero) {
+  // 5. Gestisce sia AGGIUNTA che MODIFICA
+  saveHero(hero: Hero): Observable<Hero | void> {
     const heroId = Number(hero.id);
-    const index = this.heroes.findIndex(h => h.id === heroId);
 
-    if (index !== -1) {
-      // MODIFICA: Sovrascrive l'eroe esistente
-      this.heroes[index] = { ...hero, id: heroId };
+    if (heroId !== 0) {
+      // MODIFICA: Richiesta PUT all'URL dell'eroe specifico
+      return this.http.put<void>(`${this.apiUrl}/${heroId}`, hero);
     } else {
-      // AGGIUNTA: Genera nuovo ID se è 0, altrimenti usa quello passato
-      const finalId = heroId === 0 ? this.generateNewId() : heroId;
-      this.heroes.push({ ...hero, id: finalId });
+      // AGGIUNTA: Richiesta POST alla collezione generica
+      // Rimuoviamo l'ID a 0 prima di inviarlo, poiché il server ne genererà uno unico
+      const { id, ...newHero } = hero; 
+      return this.http.post<Hero>(this.apiUrl, newHero);
     }
-  }
-
-  // Utility per generare un ID unico (evita duplicati)
-  private generateNewId(): number {
-    return this.heroes.length > 0 
-      ? Math.max(...this.heroes.map(h => h.id)) + 1 
-      : 1;
   }
 }

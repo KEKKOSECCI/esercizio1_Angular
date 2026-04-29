@@ -1,5 +1,5 @@
-import { Component, Output, EventEmitter, Input } from '@angular/core';
-import { FormsModule } from '@angular/forms'; // OBBLIGATORIO per ngModel
+import { Component, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms'; 
 import { Hero } from '../../models/hero-model';
 import { HeroService } from '../../services/heroservice';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -7,14 +7,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 @Component({
   selector: 'app-hero-insert',
   standalone: true,
-  imports: [FormsModule], // Aggiungilo qui
+  imports: [FormsModule], 
   templateUrl: './hero-insert.html',
   styleUrl: './hero-insert.css'
 })
-export class HeroInsert {
+export class HeroInsert implements OnInit {
   hero: Hero = { id: 0, nome: '', potere: '', completata: false };
 
-  // Inietti il servizio, le rotte (per l'ID) e il router (per tornare indietro)
   constructor(
     private heroService: HeroService,
     private route: ActivatedRoute,
@@ -23,17 +22,32 @@ export class HeroInsert {
 
   ngOnInit() {
     const id = +this.route.snapshot.paramMap.get('id')!;
+    
     if (id !== 0) {
-      const data = this.heroService.getHeroById(id);
-      if (data) this.hero = { ...data }; // Copia l'eroe nel form
+      this.heroService.getHeroById(id).subscribe({
+        next: (data) => {
+          if (data) {
+            this.hero = { ...data }; // Copia l'eroe nel form
+          }
+        },
+        error: (err) => {
+          console.error('Errore nel recupero dell\'eroe:', err);
+        }
+      });
     }
   }
 
   save() {
-    this.heroService.saveHero(this.hero);
-    this.router.navigate(['/list']); // Dopo il salva, torna alla lista
+    // Ci iscriviamo all'Observable restituito da saveHero
+    this.heroService.saveHero(this.hero).subscribe({
+      next: () => {
+        console.log('Eroe salvato con successo!');
+        // Naviga indietro solo DOPO che il server ha risposto positivamente
+        this.router.navigate(['/list']); 
+      },
+      error: (err) => {
+        console.error('Errore durante il salvataggio:', err);
+      }
+    });
   }
 }
-
-
-
