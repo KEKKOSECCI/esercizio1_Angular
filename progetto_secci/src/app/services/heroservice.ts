@@ -7,17 +7,17 @@ import { Hero } from '../models/hero-model'; // 👈 IMPORTA QUELLA DEL MODELLO
   providedIn: 'root',
 })
 export class HeroService {
-  private apiUrl = 'https://crudcrud.com/api/5cb0c3222d15483082cf26cccf49725e'; 
+  private apiUrl = 'https://crudcrud.com/api/7c995e335dda4ad1993bbd196e8e370e/heroes'; 
 
   constructor(private http: HttpClient) {}
 
   getHeroes(): Observable<Hero[]> {
     // Non serve più il .pipe(map(...)) perché usiamo direttamente _id
-    return this.http.get<Hero[]>(`${this.apiUrl}/heroes`);
+    return this.http.get<Hero[]>(`${this.apiUrl}`);
   }
 
   getHeroById(id: string): Observable<Hero> {
-    return this.http.get<Hero>(`${this.apiUrl}/heroes/${id}`);
+    return this.http.get<Hero>(`${this.apiUrl}/${id}`);
   }
 
     markAsDone(hero: Hero): Observable<void> {
@@ -28,21 +28,18 @@ export class HeroService {
     const { _id, ...cleanHero } = updatedHero; 
 
     // Mandiamo a crudcrud l'URL con l'ID, ma il body pulito senza _id
-    return this.http.put<void>(`${this.apiUrl}/heroes/${_id}`, cleanHero);
+    return this.http.put<void>(`${this.apiUrl}/${_id}`, cleanHero);
   }
 
    delete(id: string): Observable<Hero[]> {
-    // 1. Invia solo l'URL senza passare alcun oggetto come secondo parametro
-    return this.http.delete<void>(`${this.apiUrl}/heroes/${id}`).pipe(
-      
-      // 2. Dopo la cancellazione, richiedi la lista aggiornata
-      switchMap(() => this.getHeroes()),
-      tap((listaEroi) => {
-        console.log('--- LISTA AGGIORNATA DOPO LA DELETE ---');
-        console.table(listaEroi);
-      })
-    );
+  if (!id) {
+    throw new Error("ID mancante nella delete()");
   }
+
+  return this.http.delete<void>(`${this.apiUrl}/${id}`).pipe(
+    switchMap(() => this.getHeroes())
+  );
+}
 
 
   getTotalCompleted(heroes: Hero[]): number {
@@ -57,13 +54,13 @@ export class HeroService {
       const { _id, ...cleanHero } = hero; 
       
       // Mandiamo a crudcrud l'URL con l'ID, ma il body pulito senza _id
-      return this.http.put<void>(`${this.apiUrl}/heroes/${_id}`, cleanHero);
+      return this.http.put<void>(`${this.apiUrl}/${_id}`, cleanHero);
       
     } else {
       // 2. È un'aggiunta (POST)
       const { _id, ...cleanHero } = hero; 
       
-      return this.http.post<Hero>(`${this.apiUrl}/heroes`, cleanHero).pipe(
+      return this.http.post<Hero>(`${this.apiUrl}`, cleanHero).pipe(
         switchMap(() => this.getHeroes()),
         tap((listaEroi) => {
           console.log('--- LISTA AGGIORNATA DOPO LA POST ---');

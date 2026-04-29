@@ -12,7 +12,7 @@ import { RouterLink } from '@angular/router';
 export class HeroCardComponent {
   @Input() hero!: Hero; 
   @Output() onMissionDone = new EventEmitter<string>(); 
-  @Output() delete = new EventEmitter<string>(); 
+  @Output() onDelete  = new EventEmitter<string>(); 
 
   notifyParent() {
     // Emettiamo la proprietà corretta del server
@@ -20,7 +20,7 @@ export class HeroCardComponent {
   }
   avvisaDelete() {
     // Emettiamo la proprietà corretta del server
-    this.onMissionDone.emit(this.hero._id);
+    this.onDelete.emit(this.hero._id);
   }
 }
 

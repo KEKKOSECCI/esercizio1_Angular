@@ -7,7 +7,7 @@
   <app-hero-card-component
     [hero]="h" 
     (onMissionDone)="markAsDone($event)"
-    (onDelete)="cancellaEroe($any($event))"> <!-- 👈 Aggiungi $any(...) qui -->
+    (onDelete)="cancellaEroe($event)"> <!-- 👈 Aggiungi $any(...) qui -->
   </app-hero-card-component>
       } @empty {
         <p style="color: white; text-align: center;">Nessun eroe reclutato al momento.</p>
