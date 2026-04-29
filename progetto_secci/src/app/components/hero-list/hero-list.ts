@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core'; // 👈 1. Importa questo
 import { CommonModule } from '@angular/common';
 import { HeroCardComponent } from '../hero-card-component/hero-card-component';
 import { Hero } from '../../models/hero-model';
@@ -16,17 +16,24 @@ export class HeroList implements OnInit {
   heroes: Hero[] = [];
   currentHero!: Hero;
 
-  constructor(private heroService: HeroService) {}
+  // 2. Iniettalo nel costruttore
+  constructor(
+    private heroService: HeroService,
+    private cdr: ChangeDetectorRef 
+  ) {}
 
   ngOnInit() {
     this.caricaEroi();
   }
 
-  // 1. Metodo per caricare i dati via HTTP
   caricaEroi() {
     this.heroService.getHeroes().subscribe({
       next: (data) => {
-        this.heroes = data;
+        console.log('Eroi caricati:', data);
+        this.heroes = data; // I dati vengono salvati...
+        
+        // 3. 🔥 Forza Angular a ricalcolare la vista!
+        this.cdr.detectChanges(); 
       },
       error: (err) => {
         console.error('Errore nel caricamento degli eroi:', err);
@@ -34,27 +41,29 @@ export class HeroList implements OnInit {
     });
   }
 
-   // 2. Funzione per segnare la missione come fatta
-  markAsDone(id: number) { // 👈 Cambia il tipo del parametro in 'number'
-    
-    // Cerchiamo l'oggetto eroe nell'array locale usando l'ID ricevuto dal figlio
-    const hero = this.heroes.find(h => h.id === id);
+  markAsDone(id: string) { 
+    const hero = this.heroes.find(h => h._id === id);
 
     if (hero) {
       this.heroService.markAsDone(hero).subscribe({
         next: () => {
-          // Aggiorna lo stato visivo dell'eroe senza ricaricare tutto
           hero.completata = true;
+          this.cdr.detectChanges(); // 👈 Consigliato anche qui dopo la modifica
         },
-        error: (err) => {
-          console.error('Errore nel completamento della missione:', err);
-        }
+        error: (err) => console.error('Errore:', err)
       });
     }
   }
+ cancellaEroe(id: string) {
+  this.heroService.delete(id).subscribe({
+    next: (listaAggiornata) => {
+      this.heroes = listaAggiornata; // Aggiorna l'array con la nuova lista senza l'eroe
+      this.cdr.detectChanges(); // Forza il refresh grafico
+    },
+    error: (err) => console.error('Errore nella cancellazione:', err)
+  });
+}
 
-
-  // 3. Getter calcolato passando l'array locale
   get totalCompleted() {
     return this.heroService.getTotalCompleted(this.heroes);
   }

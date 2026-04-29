@@ -1,13 +1,19 @@
-<div class="card" [style.background-color]="hero.completata ? 'lightgreen'
-: 'white'">
-<h3>{{ hero.nome }}</h3>
-<p>Potere: {{ hero.potere }}</p>
-<button class="btn-done" (click)="notifyParent()" [disabled]="hero.completata">
-  Missione Compiuta
-</button>
+<div class="card" [style.background-color]="hero.completata ? 'lightgreen' : 'white'">
+  <h3>{{ hero.nome }}</h3>
+  <p>Potere: {{ hero.potere }}</p>
+  
+  <!-- Contenitore con la classe per gestire lo spazio -->
+  <div class="actions-group">
+    <button class="btn-done" (click)="notifyParent()" [disabled]="hero.completata">
+      Missione Compiuta
+    </button>
 
-<button [routerLink]="['/insert' , hero.id]" class="btn-edit" >
-  Edit ✏️
-</button>
+    <button [routerLink]="['/insert', hero._id]" class="btn-edit">
+      Edit ✏️
+    </button>
 
+    <button class="btn-delete" (click)="avvisaDelete()">
+      Delete 🗑️
+    </button>
+  </div>
 </div>

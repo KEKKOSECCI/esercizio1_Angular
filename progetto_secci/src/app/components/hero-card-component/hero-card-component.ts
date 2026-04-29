@@ -10,14 +10,17 @@ import { RouterLink } from '@angular/router';
   styleUrl: './hero-card-component.css',
 })
 export class HeroCardComponent {
-  @Input() hero!: Hero; // Riceve l'eroe dal padre
-  @Output() onMissionDone = new EventEmitter<number>(); // Invia l'ID al padre
-  @Output() edit = new EventEmitter<void>();
-  notifyParent() {
-    this.onMissionDone.emit(this.hero.id);
-  }
-  avvisaEdit(){
-    this.edit.emit();
-  }
+  @Input() hero!: Hero; 
+  @Output() onMissionDone = new EventEmitter<string>(); 
+  @Output() delete = new EventEmitter<string>(); 
 
+  notifyParent() {
+    // Emettiamo la proprietà corretta del server
+    this.onMissionDone.emit(this.hero._id);
+  }
+  avvisaDelete() {
+    // Emettiamo la proprietà corretta del server
+    this.onMissionDone.emit(this.hero._id);
+  }
 }
+

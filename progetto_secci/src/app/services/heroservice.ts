@@ -1,59 +1,77 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-
-// Interfaccia per tipizzare l'eroe
-export interface Hero {
-  id: number;
-  nome: string;
-  potere: string;
-  completata: boolean;
-}
+import { Observable, switchMap, tap } from 'rxjs';
+import { Hero } from '../models/hero-model'; // 👈 IMPORTA QUELLA DEL MODELLO
 
 @Injectable({
   providedIn: 'root',
 })
 export class HeroService {
-  // L'URL della tua API reale
-  private apiUrl = 'https://crudcrud.com/apid9316f9bf8d446b48fe3d35b6ebf334e'; 
+  private apiUrl = 'https://crudcrud.com/api/5cb0c3222d15483082cf26cccf49725e'; 
 
   constructor(private http: HttpClient) {}
 
-  // 1. Restituisce tutta la lista (Richiesta GET)
   getHeroes(): Observable<Hero[]> {
-    return this.http.get<Hero[]>(this.apiUrl);
+    // Non serve più il .pipe(map(...)) perché usiamo direttamente _id
+    return this.http.get<Hero[]>(`${this.apiUrl}/heroes`);
   }
 
-  // 2. Cerca un eroe specifico per l'Edit (Richiesta GET)
-  getHeroById(id: number): Observable<Hero> {
-    return this.http.get<Hero>(`${this.apiUrl}/${id}`);
+  getHeroById(id: string): Observable<Hero> {
+    return this.http.get<Hero>(`${this.apiUrl}/heroes/${id}`);
   }
 
-  // 3. Segna missione come fatta (Richiesta PUT o PATCH)
-  // Nota: Crudcrud richiede l'invio dell'intero oggetto aggiornato con PUT
-  markAsDone(hero: Hero): Observable<void> {
+    markAsDone(hero: Hero): Observable<void> {
+    // 1. Creiamo l'oggetto aggiornato con completata = true
     const updatedHero = { ...hero, completata: true };
-    return this.http.put<void>(`${this.apiUrl}/${hero.id}`, updatedHero);
+    
+    // 2. 🔥 ESTRAIAMO l' _id dall'oggetto da spedire!
+    const { _id, ...cleanHero } = updatedHero; 
+
+    // Mandiamo a crudcrud l'URL con l'ID, ma il body pulito senza _id
+    return this.http.put<void>(`${this.apiUrl}/heroes/${_id}`, cleanHero);
   }
 
-  // 4. Calcola il totale delle missioni completate (Gestito lato client)
-  // Questo metodo elabora l'array che riceve dall'Observable del componente
+   delete(id: string): Observable<Hero[]> {
+    // 1. Invia solo l'URL senza passare alcun oggetto come secondo parametro
+    return this.http.delete<void>(`${this.apiUrl}/heroes/${id}`).pipe(
+      
+      // 2. Dopo la cancellazione, richiedi la lista aggiornata
+      switchMap(() => this.getHeroes()),
+      tap((listaEroi) => {
+        console.log('--- LISTA AGGIORNATA DOPO LA DELETE ---');
+        console.table(listaEroi);
+      })
+    );
+  }
+
+
   getTotalCompleted(heroes: Hero[]): number {
     return heroes.filter(h => h.completata).length;
   }
 
-  // 5. Gestisce sia AGGIUNTA che MODIFICA
-  saveHero(hero: Hero): Observable<Hero | void> {
-    const heroId = Number(hero.id);
-
-    if (heroId !== 0) {
-      // MODIFICA: Richiesta PUT all'URL dell'eroe specifico
-      return this.http.put<void>(`${this.apiUrl}/${heroId}`, hero);
+    saveHero(hero: Hero): Observable<any> {
+    // 1. Se l'eroe ha già un _id di crudcrud, allora è una modifica (PUT)
+    if (hero._id && hero._id.trim() !== '') {
+      
+      // 👉 ESTRAIAMO l' _id dall'oggetto da spedire!
+      const { _id, ...cleanHero } = hero; 
+      
+      // Mandiamo a crudcrud l'URL con l'ID, ma il body pulito senza _id
+      return this.http.put<void>(`${this.apiUrl}/heroes/${_id}`, cleanHero);
+      
     } else {
-      // AGGIUNTA: Richiesta POST alla collezione generica
-      // Rimuoviamo l'ID a 0 prima di inviarlo, poiché il server ne genererà uno unico
-      const { id, ...newHero } = hero; 
-      return this.http.post<Hero>(this.apiUrl, newHero);
+      // 2. È un'aggiunta (POST)
+      const { _id, ...cleanHero } = hero; 
+      
+      return this.http.post<Hero>(`${this.apiUrl}/heroes`, cleanHero).pipe(
+        switchMap(() => this.getHeroes()),
+        tap((listaEroi) => {
+          console.log('--- LISTA AGGIORNATA DOPO LA POST ---');
+          console.table(listaEroi);
+        })
+      );
     }
   }
+
+
 }
