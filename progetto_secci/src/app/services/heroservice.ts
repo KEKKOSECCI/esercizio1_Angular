@@ -7,7 +7,7 @@ import { Hero } from '../models/hero-model'; // 👈 IMPORTA QUELLA DEL MODELLO
   providedIn: 'root',
 })
 export class HeroService {
-  private apiUrl = 'https://crudcrud.com/api/7c995e335dda4ad1993bbd196e8e370e/heroes'; 
+  private apiUrl = 'https://crudcrud.com/api/ea779bbde0974df887aeaf9c0800cdd9/heroes'; 
 
   constructor(private http: HttpClient) {}
 
@@ -21,13 +21,8 @@ export class HeroService {
   }
 
     markAsDone(hero: Hero): Observable<void> {
-    // 1. Creiamo l'oggetto aggiornato con completata = true
     const updatedHero = { ...hero, completata: true };
-    
-    // 2. 🔥 ESTRAIAMO l' _id dall'oggetto da spedire!
     const { _id, ...cleanHero } = updatedHero; 
-
-    // Mandiamo a crudcrud l'URL con l'ID, ma il body pulito senza _id
     return this.http.put<void>(`${this.apiUrl}/${_id}`, cleanHero);
   }
 
@@ -47,8 +42,7 @@ export class HeroService {
   }
 
     saveHero(hero: Hero): Observable<any> {
-    // 1. Se l'eroe ha già un _id di crudcrud, allora è una modifica (PUT)
-    if (hero._id && hero._id.trim() !== '') {
+    if (hero._id && hero._id.trim() !== '0') {
       
       // 👉 ESTRAIAMO l' _id dall'oggetto da spedire!
       const { _id, ...cleanHero } = hero; 

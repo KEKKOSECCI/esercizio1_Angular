@@ -1,12 +1,24 @@
 <div class="insert-overlay">
   <div class="insert-card">
-    <h3>{{ hero._id !== "0" ? 'Modifica Eroe' : 'Aggiungi Nuovo Eroe' }}</h3>
+    <!-- Se l'id è '0' stiamo aggiungendo, altrimenti modificando -->
+    <h3>{{ hero._id !== '0' ? 'Modifica Eroe' : 'Aggiungi Nuovo Eroe' }}</h3>
     
-    <input type="text" [(ngModel)]="hero.nome" placeholder="Nome Eroe">
-    <input type="text" [(ngModel)]="hero.potere" placeholder="Potere Principale">
+    <div class="form-group">
+      <input type="text" 
+             [(ngModel)]="hero.nome" 
+             name="heroNome" 
+             placeholder="Nome Eroe">
+    </div>
+
+    <div class="form-group">
+      <input type="text" 
+             [(ngModel)]="hero.potere" 
+             name="heroPotere" 
+             placeholder="Potere Principale">
+    </div>
     
-    <button (click)="save()">
-      {{ hero._id !== "0" ? 'Conferma Modifiche' : 'Recluta Eroe' }}
+    <button (click)="save()" [disabled]="!hero.nome">
+      {{ hero._id !== '0' ? 'Conferma Modifiche' : 'Recluta Eroe' }}
     </button>
   </div>
 </div>
