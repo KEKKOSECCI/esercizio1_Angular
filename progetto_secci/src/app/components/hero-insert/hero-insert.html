@@ -1,7 +1,7 @@
 <div class="insert-overlay">
   <div class="insert-card">
     <!-- Se l'id è '0' stiamo aggiungendo, altrimenti modificando -->
-    <h3>{{ hero._id !== '0' ? 'Modifica Eroe' : 'Aggiungi Nuovo Eroe' }}</h3>
+    <h3>{{ hero.id !== '0' ? 'Modifica Eroe' : 'Aggiungi Nuovo Eroe' }}</h3>
     
     <div class="form-group">
       <input type="text" 
@@ -18,7 +18,7 @@
     </div>
     
     <button (click)="save()" [disabled]="!hero.nome">
-      {{ hero._id !== '0' ? 'Conferma Modifiche' : 'Recluta Eroe' }}
+      {{ hero.id !== '0' ? 'Conferma Modifiche' : 'Recluta Eroe' }}
     </button>
   </div>
 </div>

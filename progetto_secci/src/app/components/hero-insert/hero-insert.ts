@@ -12,7 +12,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrl: './hero-insert.css'
 })
 export class HeroInsert implements OnInit {
-  hero: Hero = { _id: '0', nome: '', potere: '', completata: false };
+  hero: Hero = { id: '0', nome: '', potere: '', completata: false };
 
   constructor(
     private heroService: HeroService,

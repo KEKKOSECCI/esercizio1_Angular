@@ -3,7 +3,7 @@
   
   <div class="container">
       <!-- ⚠️ Usiamo track h._id perché il server genera _id -->
-      @for (h of heroes; track h._id) {
+      @for (h of heroes; track h.id) {
   <app-hero-card-component
     [hero]="h" 
     (onMissionDone)="markAsDone($event)"

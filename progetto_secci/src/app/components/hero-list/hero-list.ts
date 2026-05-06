@@ -41,8 +41,8 @@ export class HeroList implements OnInit {
     });
   }
 
-  markAsDone(id: string) { 
-    const hero = this.heroes.find(h => h._id === id);
+  markAsDone(id: string) {
+    const hero = this.heroes.find(h => h.id === id);
 
     if (hero) {
       this.heroService.markAsDone(hero).subscribe({

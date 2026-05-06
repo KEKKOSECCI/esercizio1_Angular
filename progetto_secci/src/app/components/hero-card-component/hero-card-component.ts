@@ -16,11 +16,11 @@ export class HeroCardComponent {
 
   notifyParent() {
     // Emettiamo la proprietà corretta del server
-    this.onMissionDone.emit(this.hero._id);
+    this.onMissionDone.emit(this.hero.id);
   }
   avvisaDelete() {
     // Emettiamo la proprietà corretta del server
-    this.onDelete.emit(this.hero._id);
+    this.onDelete.emit(this.hero.id);
   }
 }
 
